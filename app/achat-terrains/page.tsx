@@ -12,11 +12,9 @@ import {
   Clock,
   DollarSign,
   Zap,
-  TreePine,
   Building,
   Home,
   Factory,
-  Mountain,
   Waves,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -96,7 +94,7 @@ export default function AchatTerrains() {
                 className="border-white text-black bg-white hover:bg-white/90"
               >
                 <a href="tel:514-623-4280">
-                  {t("common.callUs")}: {t("common.phone")}
+                  {t("common.callUs")}: 514‑623‑4280
                   <ArrowRight size={16} className="ml-2" />
                 </a>
               </Button>
@@ -174,34 +172,6 @@ export default function AchatTerrains() {
 
             <AnimatedSection delay={0.3}>
               <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <TreePine size={32} className="text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-4 text-center">{t("landPurchase.agriculturalTitle")}</h3>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.agriculturalFeature1")}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.agriculturalFeature2")}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.agriculturalFeature3")}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.agriculturalFeature4")}</span>
-                  </li>
-                </ul>
-                <p className="text-gray-600 text-sm">{t("landPurchase.agriculturalDesc")}</p>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.4}>
-              <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100">
                 <div className="bg-gradient-to-br from-orange-500 to-orange-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Factory size={32} className="text-white" />
                 </div>
@@ -228,35 +198,7 @@ export default function AchatTerrains() {
               </div>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.5}>
-              <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Mountain size={32} className="text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-4 text-center">{t("landPurchase.forestTitle")}</h3>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.forestFeature1")}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.forestFeature2")}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.forestFeature3")}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-green-600" />
-                    <span className="text-sm">{t("landPurchase.forestFeature4")}</span>
-                  </li>
-                </ul>
-                <p className="text-gray-600 text-sm">{t("landPurchase.forestDesc")}</p>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.6}>
+            <AnimatedSection delay={0.4}>
               <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-100">
                 <div className="bg-gradient-to-br from-cyan-500 to-cyan-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Waves size={32} className="text-white" />
@@ -349,7 +291,8 @@ export default function AchatTerrains() {
 
           <div className="max-w-4xl mx-auto">
             <div className="relative">
-              <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-green-600 to-emerald-700 transform -translate-y-1/2 z-0"></div>
+              <div className="hidden md:block absolute top-[55%] left-0 right-0 h-1 bg-gradient-to-r from-green-600 to-emerald-700 transform -translate-y-1/2 z-0"></div>
+
 
               <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative z-10">
                 {[
@@ -529,8 +472,6 @@ export default function AchatTerrains() {
                         <option value="residential">{t("landPurchase.landTypeResidential")}</option>
                         <option value="commercial">{t("landPurchase.landTypeCommercial")}</option>
                         <option value="industrial">{t("landPurchase.landTypeIndustrial")}</option>
-                        <option value="agricultural">{t("landPurchase.landTypeAgricultural")}</option>
-                        <option value="forest">{t("landPurchase.landTypeForest")}</option>
                         <option value="waterfront">{t("landPurchase.landTypeWaterfront")}</option>
                         <option value="other">{t("landPurchase.landTypeOther")}</option>
                       </select>

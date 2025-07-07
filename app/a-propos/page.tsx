@@ -21,30 +21,47 @@ export default function AboutPage() {
         </div>
 
         <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <div className="mb-8">
-                <Image
-                  src="/images/logo-main.png"
-                  alt="Quoi Faire Avec Ma Maison"
-                  width={300}
-                  height={300}
-                  className="h-32 w-auto mx-auto filter brightness-0 invert"
-                />
-              </div>
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+            {/* Texte à gauche */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-center lg:text-left max-w-xl"
+            >
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
                 {t("about.title")}{" "}
                 <span className="bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
                   {t("about.titleHighlight")}
                 </span>
               </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-3xl mx-auto">{t("about.heroSubtitle")}</p>
+              <p className="text-lg md:text-xl mb-8 text-gray-300">
+                {t("about.heroSubtitle")}
+              </p>
+            </motion.div>
+
+            {/* Image à droite */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-md w-full"
+            >
+              <Image
+                src="/images/pexels-tomfisk-7815702.webp"
+                alt="Maison canadienne typique"
+                width={600}
+                height={400}
+                className="rounded-xl shadow-lg w-full h-auto"
+              />
             </motion.div>
           </div>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
+
+
 
       {/* Our Story Section */}
       <AnimatedSection className="py-16 md:py-24 bg-white">
@@ -54,27 +71,21 @@ export default function AboutPage() {
               <h2 className="text-3xl md:text-4xl font-bold mb-6">{t("about.ourStoryTitle")}</h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 gap-12 items-center">
+              <div className="flex justify-center mb-8">
+                <Image
+                  src="/images/logo-main.png"
+                  alt="Quoi Faire Avec Ma Maison"
+                  width={200}
+                  height={200}
+                  className="h-24 w-auto"
+                />
+              </div>
+
               <div className="space-y-6">
                 <p className="text-lg text-gray-700 leading-relaxed">{t("about.storyParagraph1")}</p>
                 <p className="text-lg text-gray-700 leading-relaxed">{t("about.storyParagraph2")}</p>
                 <p className="text-lg text-gray-700 leading-relaxed">{t("about.storyParagraph3")}</p>
-              </div>
-
-              <div className="relative">
-                <Image
-                  src="/images/david-manianga-professional.png"
-                  alt="David Manianga - Fondateur"
-                  width={500}
-                  height={600}
-                  className="rounded-xl shadow-lg"
-                />
-                <div className="absolute -bottom-6 -right-6 bg-brand-700 text-white p-4 rounded-xl shadow-lg">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold">10+</div>
-                    <div className="text-sm">{t("about.yearsExperience")}</div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -94,7 +105,12 @@ export default function AboutPage() {
               <CardContent className="p-0">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="relative h-64 lg:h-auto">
-                    <Image src="/images/david-manianga-1.jpeg" alt="David Manianga" fill className="object-cover" />
+                    <Image
+                      src="/images/david-manianga-professional.png"
+                      alt="David Manianga"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div className="p-8 lg:p-12">
                     <h3 className="text-2xl font-bold mb-2">David Manianga</h3>
@@ -109,16 +125,16 @@ export default function AboutPage() {
                       <div className="flex items-center gap-3">
                         <Phone size={18} className="text-brand-700" />
                         <a href="tel:514-623-4280" className="text-gray-700 hover:text-brand-700 transition-colors">
-                          {t("common.phone")}
+                          514‑623‑4280
                         </a>
                       </div>
                       <div className="flex items-center gap-3">
                         <Mail size={18} className="text-brand-700" />
                         <a
-                          href="mailto:david@quoifaireavecmamaison.com"
+                          href="mailto:info@quoifaireavecmamaison.com"
                           className="text-gray-700 hover:text-brand-700 transition-colors"
                         >
-                          david@quoifaireavecmamaison.com
+                          info@quoifaireavecmamaison.com
                         </a>
                       </div>
                     </div>
@@ -230,7 +246,7 @@ export default function AboutPage() {
                       href="tel:514-623-4280"
                       className="text-brand-700 hover:text-brand-800 transition-colors text-lg"
                     >
-                      {t("common.phone")}
+                      514‑623‑4280
                     </a>
                   </div>
                 </div>
@@ -245,7 +261,7 @@ export default function AboutPage() {
                       href="mailto:info@quoifaireavecmamaison.com"
                       className="text-brand-700 hover:text-brand-800 transition-colors"
                     >
-                      {t("common.email")}
+                      info@quoifaireavecmamaison.com
                     </a>
                   </div>
                 </div>

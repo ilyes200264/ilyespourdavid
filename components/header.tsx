@@ -61,7 +61,7 @@ export default function Header() {
               <div className="flex items-center gap-2">
                 <Phone size={16} className="text-brand-700" />
                 <a href="tel:514-623-4280" className="text-sm hover:text-brand-700 transition-colors">
-                  {t("common.phone")}
+                  514‑623‑4280
                 </a>
               </div>
               <LanguageToggle />
@@ -148,7 +148,7 @@ export default function Header() {
                 alt="Quoi Faire Avec Ma Maison"
                 width={200}
                 height={200}
-                className={cn("transition-all duration-300", isScrolled ? "h-12 w-auto" : "h-16 w-auto")}
+                className={cn("transition-all duration-300", isScrolled ? "h-16 w-auto" : "h-20 w-auto")}
                 priority
               />
             </button>
@@ -232,7 +232,7 @@ export default function Header() {
                   alt="Quoi Faire Avec Ma Maison"
                   width={150}
                   height={150}
-                  className="h-12 w-auto"
+                  className="h-16 w-auto"
                 />
               </button>
 
