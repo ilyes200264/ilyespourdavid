@@ -35,9 +35,7 @@ export default function AboutPage() {
                   {t("about.titleHighlight")}
                 </span>
               </h1>
-              <p className="text-lg md:text-xl mb-8 text-gray-300">
-                {t("about.heroSubtitle")}
-              </p>
+              <p className="text-lg md:text-xl mb-8 text-gray-300">{t("about.heroSubtitle")}</p>
             </motion.div>
 
             {/* Image à droite */}
@@ -61,8 +59,6 @@ export default function AboutPage() {
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-
-
       {/* Our Story Section */}
       <AnimatedSection className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
@@ -74,7 +70,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 gap-12 items-center">
               <div className="flex justify-center mb-8">
                 <Image
-                  src="/images/logo-main.png"
+                  src="/images/logo-official.png"
                   alt="Quoi Faire Avec Ma Maison"
                   width={200}
                   height={200}

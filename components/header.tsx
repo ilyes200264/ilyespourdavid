@@ -144,7 +144,7 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <button onClick={() => handleNavigation("/")} className="flex items-center cursor-pointer">
               <Image
-                src="/images/logo-main.png"
+                src="/images/logo-official.png"
                 alt="Quoi Faire Avec Ma Maison"
                 width={200}
                 height={200}
@@ -228,7 +228,7 @@ export default function Header() {
             <div className="flex flex-col items-center gap-6 p-8">
               <button onClick={() => handleMobileNavigation("/")} className="flex items-center mb-8">
                 <Image
-                  src="/images/logo-main.png"
+                  src="/images/logo-official.png"
                   alt="Quoi Faire Avec Ma Maison"
                   width={150}
                   height={150}
