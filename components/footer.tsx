@@ -15,11 +15,11 @@ export default function Footer() {
           <div className="md:col-span-1">
             <div className="mb-6">
               <Image
-                src="/images/logo-main.png"
+                src="/images/logo-official.png"
                 alt="Quoi Faire Avec Ma Maison"
                 width={150}
                 height={150}
-                className="h-12 w-auto"
+                className="h-16 w-auto"
               />
             </div>
             <p className="text-gray-300 text-sm mb-4">{t("footer.description")}</p>

@@ -74,7 +74,7 @@ export default function AboutPage() {
                   alt="Quoi Faire Avec Ma Maison"
                   width={200}
                   height={200}
-                  className="h-24 w-auto"
+                  className="h-32 w-auto"
                 />
               </div>
 

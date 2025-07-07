@@ -148,7 +148,7 @@ export default function Header() {
                 alt="Quoi Faire Avec Ma Maison"
                 width={200}
                 height={200}
-                className={cn("transition-all duration-300", isScrolled ? "h-16 w-auto" : "h-20 w-auto")}
+                className={cn("transition-all duration-300", isScrolled ? "h-20 w-auto" : "h-24 w-auto")}
                 priority
               />
             </button>
@@ -232,7 +232,7 @@ export default function Header() {
                   alt="Quoi Faire Avec Ma Maison"
                   width={150}
                   height={150}
-                  className="h-16 w-auto"
+                  className="h-20 w-auto"
                 />
               </button>
 

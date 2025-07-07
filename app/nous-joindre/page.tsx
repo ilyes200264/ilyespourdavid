@@ -56,7 +56,7 @@ export default function NousJoindre() {
                       href="tel:514-623-4280"
                       className="text-brand-700 hover:text-brand-800 transition-colors text-lg font-semibold"
                     >
-                      {t("common.phone")}
+                      514-623-4280
                     </a>
                   </CardContent>
                 </Card>
@@ -74,7 +74,7 @@ export default function NousJoindre() {
                       href="mailto:info@quoifaireavecmamaison.com"
                       className="text-brand-700 hover:text-brand-800 transition-colors font-semibold"
                     >
-                      {t("common.email")}
+                      info@quoifaireavecmamaison.com
                     </a>
                   </CardContent>
                 </Card>
