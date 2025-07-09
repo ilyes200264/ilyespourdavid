@@ -13,7 +13,7 @@ const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat
 export const metadata = {
   title: "Quoi Faire Avec Ma Maison - Offre Comptant Rapide",
   description: "Vendez votre maison rapidement sans agent immobilier avec une offre comptant",
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({

@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { useLanguage } from "@/contexts/language-context"
 import AnimatedSection from "@/components/animated-section"
 import PropertyCalculator from "@/components/property-calculator"
@@ -189,8 +187,6 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
-
       {/* Hero Section */}
       <section className="pt-32 pb-16 bg-gradient-to-br from-brand-50 to-white">
         <div className="container mx-auto px-4">
@@ -462,8 +458,6 @@ export default function BlogPage() {
           </AnimatedSection>
         </div>
       </section>
-
-      <Footer />
     </div>
   )
 }
