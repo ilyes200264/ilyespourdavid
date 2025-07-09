@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import Header from "@/components/header"
-import Footer from "@/components/footer"
 import { useLanguage } from "@/contexts/language-context"
 import AnimatedSection from "@/components/animated-section"
 import PropertyCalculator from "@/components/property-calculator"
@@ -462,8 +461,6 @@ export default function BlogPage() {
           </AnimatedSection>
         </div>
       </section>
-
-      <Footer />
     </div>
   )
 }
