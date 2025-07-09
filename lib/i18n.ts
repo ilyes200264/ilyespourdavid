@@ -266,7 +266,10 @@ export const translations: Record<Language, Translation> = {
       description:
         "Nous offrons des solutions aux propriétaires de maison désireux de vendre leurs maisons rapidement, sans tracas et avec une offre équitable en espèces.",
       quickLinks: "Liens Rapides",
+      services: "Services",
+      contact: "Contactez-nous",
       serviceAreas: "Régions Desservies",
+      serviceArea: "Grand Montréal, Laval, Rive-Sud, Rive-Nord",
       contactUs: "Contactez-nous",
       subscribe: "Abonnez-vous",
       subscribeBtn: "S'abonner",
@@ -1231,7 +1234,10 @@ export const translations: Record<Language, Translation> = {
       description:
         "We offer solutions to homeowners who want to sell their homes quickly, hassle-free, and with a fair cash offer.",
       quickLinks: "Quick Links",
+      services: "Services",
+      contact: "Contact Us",
       serviceAreas: "Service Areas",
+      serviceArea: "Greater Montreal, Laval, South Shore, North Shore",
       contactUs: "Contact Us",
       subscribe: "Subscribe",
       subscribeBtn: "Subscribe",
@@ -1806,6 +1812,7 @@ export const translations: Record<Language, Translation> = {
       philosophyDesc:
         "Thanks to our experience, we know that buyers and sellers are often dissatisfied with the traditional process. That's why we created Quoi Faire Avec Ma Maison to offer a simple, quick, and transparent solution.",
 
+      // Commitment section
       commitmentTitle: "Our Commitment",
       commitmentText1:
         "We are convinced that we can help you sell your home quickly and without stress, regardless of your situation. Professionally supported by resources, we will make you an offer within 24 hours of our visit.",
