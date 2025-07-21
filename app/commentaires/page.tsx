@@ -9,9 +9,49 @@ import OfferForm from "@/components/offer-form"
 import AnimatedSection from "@/components/animated-section"
 import { useLanguage } from "@/contexts/language-context"
 import { getTranslation } from "@/lib/i18n"
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 export default function Commentaires() {
   const { language } = useLanguage()
+
+  const [formData, setFormData] = useState({
+    name: '',
+    location: '',
+    rating: '',
+    title: '',
+    testimonial: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'temoignage', ...formData }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setShowSuccess(true);
+        setFormData({ name: '', location: '', rating: '', title: '', testimonial: '' });
+      } else {
+        toast({ title: getTranslation(language, 'forms.errorTitle'), description: data.error || getTranslation(language, 'forms.errorMessage'), variant: 'destructive' });
+      }
+    } catch (error) {
+      toast({ title: getTranslation(language, 'forms.errorTitle'), description: getTranslation(language, 'forms.errorMessage'), variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="pt-32">
@@ -250,7 +290,7 @@ export default function Commentaires() {
           </div>
 
           <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -259,7 +299,9 @@ export default function Commentaires() {
                   <input
                     type="text"
                     id="name"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500 text-gray-900 placeholder:text-gray-500"
+                    onChange={handleChange}
+                    value={formData.name}
                   />
                 </div>
 
@@ -270,7 +312,9 @@ export default function Commentaires() {
                   <input
                     type="text"
                     id="location"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500 text-gray-900 placeholder:text-gray-500"
+                    onChange={handleChange}
+                    value={formData.location}
                   />
                 </div>
               </div>
@@ -295,7 +339,9 @@ export default function Commentaires() {
                 <input
                   type="text"
                   id="title"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500 text-gray-900 placeholder:text-gray-500"
+                  onChange={handleChange}
+                  value={formData.title}
                 />
               </div>
 
@@ -306,13 +352,15 @@ export default function Commentaires() {
                 <textarea
                   id="testimonial"
                   rows={5}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500 text-gray-900 placeholder:text-gray-500"
+                  onChange={handleChange}
+                  value={formData.testimonial}
                 ></textarea>
               </div>
 
               <div>
-                <Button className="w-full bg-gradient-to-r from-brand-700 to-brand-800 hover:from-brand-800 hover:to-brand-900">
-                  {getTranslation(language, "testimonials.formSubmitButton")}
+                <Button className="w-full bg-gradient-to-r from-brand-700 to-brand-800 hover:from-brand-800 hover:to-brand-900" disabled={isLoading}>
+                  {isLoading ? getTranslation(language, 'common.loading') : getTranslation(language, "testimonials.formSubmitButton")}
                 </Button>
               </div>
             </form>
@@ -338,6 +386,20 @@ export default function Commentaires() {
           </div>
         </div>
       </section>
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center border-2 border-green-200">
+            <div className="flex flex-col items-center mb-4">
+              <div className="bg-green-100 rounded-full p-4 mb-4 flex items-center justify-center">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="green"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 13l3 3 7-7"/></svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-green-700">{getTranslation(language, 'forms.successTitle') || (language === 'fr' ? 'Message envoyé !' : 'Message sent!')}</h3>
+              <p className="mb-6 text-gray-700">{getTranslation(language, 'forms.successMessage') || (language === 'fr' ? 'Votre message a bien été envoyé. Nous vous répondrons sous 24h.' : 'Your message has been sent. We will respond within 24 hours.')}</p>
+            </div>
+            <button onClick={() => setShowSuccess(false)} className="w-full py-2 px-4 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition">OK</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

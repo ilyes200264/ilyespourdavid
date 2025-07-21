@@ -725,7 +725,12 @@ export default function HomePage() {
   )
 }
 
-const FeatureCardComponent = ({ icon: Icon, title, description, gradient }) => {
+const FeatureCardComponent = ({ icon: Icon, title, description, gradient }: { 
+  icon: React.ComponentType<{ size?: number; className?: string }>; 
+  title: string; 
+  description: string; 
+  gradient?: string; 
+}) => {
   return (
     <div className="flex flex-col items-center text-center p-6 rounded-lg shadow-md bg-white">
       <div

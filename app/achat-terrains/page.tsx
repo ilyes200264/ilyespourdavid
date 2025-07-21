@@ -20,9 +20,51 @@ import {
 import { Button } from "@/components/ui/button"
 import AnimatedSection from "@/components/animated-section"
 import { useLanguage } from "@/contexts/language-context"
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 export default function AchatTerrains() {
   const { t } = useLanguage()
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    size: '',
+    zoning: '',
+    description: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'achat-terrains', ...formData }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setShowSuccess(true);
+        setFormData({ firstName: '', lastName: '', email: '', phone: '', address: '', size: '', zoning: '', description: '' });
+      } else {
+        toast({ title: t('forms.errorTitle'), description: data.error || t('forms.errorMessage'), variant: 'destructive' });
+      }
+    } catch (error) {
+      toast({ title: t('forms.errorTitle'), description: t('forms.errorMessage'), variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="pt-32">
@@ -386,7 +428,7 @@ export default function AchatTerrains() {
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -395,8 +437,10 @@ export default function AchatTerrains() {
                       <input
                         type="text"
                         id="firstName"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder:text-gray-500"
                         placeholder={t("common.firstName")}
+                        onChange={handleChange}
+                        value={formData.firstName}
                       />
                     </div>
                     <div>
@@ -406,8 +450,10 @@ export default function AchatTerrains() {
                       <input
                         type="text"
                         id="lastName"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder:text-gray-500"
                         placeholder={t("common.lastName")}
+                        onChange={handleChange}
+                        value={formData.lastName}
                       />
                     </div>
                   </div>
@@ -419,8 +465,10 @@ export default function AchatTerrains() {
                     <input
                       type="email"
                       id="email"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder:text-gray-500"
                       placeholder={t("common.email")}
+                      onChange={handleChange}
+                      value={formData.email}
                     />
                   </div>
 
@@ -431,8 +479,10 @@ export default function AchatTerrains() {
                     <input
                       type="tel"
                       id="phone"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder:text-gray-500"
                       placeholder={t("common.phone")}
+                      onChange={handleChange}
+                      value={formData.phone}
                     />
                   </div>
 
@@ -443,8 +493,10 @@ export default function AchatTerrains() {
                     <input
                       type="text"
                       id="address"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 text-gray-900 placeholder:text-gray-500"
                       placeholder={t("forms.propertyAddressPlaceholder")}
+                      onChange={handleChange}
+                      value={formData.address}
                     />
                   </div>
 
@@ -458,6 +510,8 @@ export default function AchatTerrains() {
                         id="size"
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                         placeholder={t("landPurchase.sizePlaceholder")}
+                        onChange={handleChange}
+                        value={formData.size}
                       />
                     </div>
                     <div>
@@ -467,6 +521,8 @@ export default function AchatTerrains() {
                       <select
                         id="zoning"
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
+                        onChange={handleChange}
+                        value={formData.zoning}
                       >
                         <option value="">{t("landPurchase.landTypeSelect")}</option>
                         <option value="residential">{t("landPurchase.landTypeResidential")}</option>
@@ -487,11 +543,13 @@ export default function AchatTerrains() {
                       rows={4}
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       placeholder={t("landPurchase.descriptionPlaceholder")}
+                      onChange={handleChange}
+                      value={formData.description}
                     ></textarea>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white">
-                    {t("landPurchase.submitButton")}
+                  <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 text-white" disabled={isLoading}>
+                    {isLoading ? t('common.loading') : t('landPurchase.submitButton')}
                   </Button>
                 </form>
               </div>
@@ -519,6 +577,20 @@ export default function AchatTerrains() {
           </div>
         </div>
       </section>
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center border-2 border-green-200">
+            <div className="flex flex-col items-center mb-4">
+              <div className="bg-green-100 rounded-full p-4 mb-4 flex items-center justify-center">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="green"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 13l3 3 7-7"/></svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-green-700">{t('forms.successTitle') || (t('common.language') === 'fr' ? 'Message envoyé !' : 'Message sent!')}</h3>
+              <p className="mb-6 text-gray-700">{t('forms.successMessage') || (t('common.language') === 'fr' ? 'Votre message a bien été envoyé. Nous vous répondrons sous 24h.' : 'Your message has been sent. We will respond within 24 hours.')}</p>
+            </div>
+            <button onClick={() => setShowSuccess(false)} className="w-full py-2 px-4 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition">OK</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

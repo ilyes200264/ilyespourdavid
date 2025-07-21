@@ -1,13 +1,84 @@
 "use client"
 import { motion } from "framer-motion"
-import { Phone, Mail, MapPin, Clock, MessageSquare, Send } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, MessageSquare, Send, Loader2, CheckCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import AnimatedSection from "@/components/animated-section"
 import { useLanguage } from "@/contexts/language-context"
+import { useState } from "react"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function NousJoindre() {
   const { t } = useLanguage()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+    consent: false
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target
+    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.consent) {
+      toast({
+        title: t("contact.errorTitle"),
+        description: t("contact.consentRequired"),
+        variant: "destructive"
+      });
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const templateParams = {
+        prenom: formData.firstName,
+        nom: formData.lastName,
+        telephone: formData.phone,
+        email: formData.email,
+        sujet: formData.subject,
+        message: formData.message
+      };
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'contact', ...templateParams }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setShowSuccessModal(true);
+        setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "", consent: false });
+      } else {
+        toast({
+          title: t("contact.errorTitle"),
+          description: data.error || t("contact.errorMessage"),
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: t("contact.errorTitle"),
+        description: t("contact.errorMessage"),
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="pt-32">
@@ -99,7 +170,7 @@ export default function NousJoindre() {
 
       {/* Contact Form Section */}
       <AnimatedSection className="py-16 md:py-24 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div id="contact-form" className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">{t("contact.formTitle")}</h2>
@@ -151,7 +222,7 @@ export default function NousJoindre() {
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-8">
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
@@ -160,8 +231,12 @@ export default function NousJoindre() {
                       <input
                         type="text"
                         id="firstName"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors text-gray-900 placeholder:text-gray-500"
                         placeholder={t("common.firstName")}
+                        required
                       />
                     </div>
                     <div>
@@ -171,8 +246,12 @@ export default function NousJoindre() {
                       <input
                         type="text"
                         id="lastName"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors text-gray-900 placeholder:text-gray-500"
                         placeholder={t("common.lastName")}
+                        required
                       />
                     </div>
                   </div>
@@ -184,8 +263,12 @@ export default function NousJoindre() {
                     <input
                       type="email"
                       id="email"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors text-gray-900 placeholder:text-gray-500"
                       placeholder={t("common.email")}
+                      required
                     />
                   </div>
 
@@ -196,8 +279,12 @@ export default function NousJoindre() {
                     <input
                       type="tel"
                       id="phone"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors text-gray-900 placeholder:text-gray-500"
                       placeholder={t("common.phone")}
+                      required
                     />
                   </div>
 
@@ -207,7 +294,11 @@ export default function NousJoindre() {
                     </label>
                     <select
                       id="subject"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors text-gray-900"
+                      required
                     >
                       <option value="">{t("contact.subjectSelect")}</option>
                       <option value="house-sale">{t("contact.subjectHouseSale")}</option>
@@ -224,9 +315,13 @@ export default function NousJoindre() {
                     </label>
                     <textarea
                       id="message"
+                      name="message"
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors"
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 transition-colors text-gray-900 placeholder:text-gray-500"
                       placeholder={t("contact.messagePlaceholder")}
+                      required
                     ></textarea>
                   </div>
 
@@ -234,16 +329,26 @@ export default function NousJoindre() {
                     <input
                       type="checkbox"
                       id="consent"
+                      name="consent"
+                      checked={formData.consent}
+                      onChange={handleChange}
                       className="mt-1 h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-300 rounded"
+                      required
                     />
                     <label htmlFor="consent" className="text-sm text-gray-600">
                       {t("contact.consentText")}
                     </label>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-brand-700 to-brand-800 hover:from-brand-800 hover:to-brand-900 text-white py-3">
-                    <Send size={20} className="mr-2" />
-                    {t("contact.sendButton")}
+                  <Button type="submit" className="w-full bg-gradient-to-r from-brand-700 to-brand-800 hover:from-brand-800 hover:to-brand-900 text-white py-3" disabled={isLoading}>
+                    {isLoading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Send size={20} className="mr-2" />
+                        {t("contact.sendButton")}
+                      </>
+                    )}
                   </Button>
                 </form>
               </div>
@@ -403,6 +508,54 @@ export default function NousJoindre() {
           </div>
         </div>
       </section>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 relative"
+          >
+            <div className="text-center">
+              <div className="bg-gradient-to-br from-green-500 to-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                <CheckCircle size={32} className="text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                {t("contact.successTitle")}
+              </h3>
+              
+              <p className="text-gray-600 mb-6">
+                {t("contact.successMessage")}
+              </p>
+              
+              <div className="bg-gradient-to-br from-brand-50 to-brand-100 rounded-lg p-4 mb-6">
+                <p className="text-sm text-brand-800 font-medium">
+                  {t("contact.successNote")}
+                </p>
+              </div>
+              
+              <Button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full bg-gradient-to-r from-brand-700 to-brand-800 hover:from-brand-800 hover:to-brand-900 text-white"
+              >
+                {t("contact.successButton")}
+              </Button>
+            </div>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowSuccessModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              <X size={20} />
+            </Button>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }

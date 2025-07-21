@@ -21,10 +21,53 @@ import { Button } from "@/components/ui/button"
 import AnimatedSection from "@/components/animated-section"
 import { useLanguage } from "@/contexts/language-context"
 import { getTranslation } from "@/lib/i18n"
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 
 export default function AchatMultilogements() {
   const { language } = useLanguage()
   const t = (key: string) => getTranslation(language, key)
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    units: '',
+    revenue: '',
+    situation: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formType: 'achat-multilogements', ...formData }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setShowSuccess(true);
+        setFormData({ firstName: '', lastName: '', email: '', phone: '', address: '', units: '', revenue: '', situation: '' });
+      } else {
+        toast({ title: t('forms.errorTitle'), description: data.error || t('forms.errorMessage'), variant: 'destructive' });
+      }
+    } catch (error) {
+      toast({ title: t('forms.errorTitle'), description: t('forms.errorMessage'), variant: 'destructive' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="pt-32">
@@ -555,7 +598,7 @@ export default function AchatMultilogements() {
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -564,8 +607,10 @@ export default function AchatMultilogements() {
                       <input
                         type="text"
                         id="firstName"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
                         placeholder={t("common.firstName")}
+                        onChange={handleChange}
+                        value={formData.firstName}
                       />
                     </div>
                     <div>
@@ -575,8 +620,10 @@ export default function AchatMultilogements() {
                       <input
                         type="text"
                         id="lastName"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
                         placeholder={t("common.lastName")}
+                        onChange={handleChange}
+                        value={formData.lastName}
                       />
                     </div>
                   </div>
@@ -588,8 +635,10 @@ export default function AchatMultilogements() {
                     <input
                       type="email"
                       id="email"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
                       placeholder="votre.email@exemple.com"
+                      onChange={handleChange}
+                      value={formData.email}
                     />
                   </div>
 
@@ -600,8 +649,10 @@ export default function AchatMultilogements() {
                     <input
                       type="tel"
                       id="phone"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
                       placeholder="(514) 123-4567"
+                      onChange={handleChange}
+                      value={formData.phone}
                     />
                   </div>
 
@@ -612,8 +663,10 @@ export default function AchatMultilogements() {
                     <input
                       type="text"
                       id="address"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
                       placeholder={t("forms.propertyAddressPlaceholder")}
+                      onChange={handleChange}
+                      value={formData.address}
                     />
                   </div>
 
@@ -624,7 +677,9 @@ export default function AchatMultilogements() {
                       </label>
                       <select
                         id="units"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                        onChange={handleChange}
+                        value={formData.units}
                       >
                         <option value="">{t("multiUnit.selectUnits")}</option>
                         <option value="2">{t("multiUnit.twoUnits")}</option>
@@ -642,7 +697,9 @@ export default function AchatMultilogements() {
                         type="number"
                         id="revenue"
                         placeholder={t("multiUnit.revenuePlaceholder")}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
+                        onChange={handleChange}
+                        value={formData.revenue}
                       />
                     </div>
                   </div>
@@ -654,13 +711,15 @@ export default function AchatMultilogements() {
                     <textarea
                       id="situation"
                       rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder:text-gray-500"
                       placeholder={t("multiUnit.situationPlaceholder")}
+                      onChange={handleChange}
+                      value={formData.situation}
                     ></textarea>
                   </div>
 
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white">
-                    {t("multiUnit.submitButton")}
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white" disabled={isLoading}>
+                    {isLoading ? t('common.loading') : t('multiUnit.submitButton')}
                   </Button>
                 </form>
               </div>
@@ -688,6 +747,20 @@ export default function AchatMultilogements() {
           </div>
         </div>
       </section>
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center border-2 border-green-200">
+            <div className="flex flex-col items-center mb-4">
+              <div className="bg-green-100 rounded-full p-4 mb-4 flex items-center justify-center">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="green"><circle cx="12" cy="12" r="10" strokeWidth="2"/><path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M7 13l3 3 7-7"/></svg>
+              </div>
+              <h3 className="text-2xl font-bold mb-2 text-green-700">{t('forms.successTitle') || (t('common.language') === 'fr' ? 'Message envoyé !' : 'Message sent!')}</h3>
+              <p className="mb-6 text-gray-700">{t('forms.successMessage') || (t('common.language') === 'fr' ? 'Votre message a bien été envoyé. Nous vous répondrons sous 24h.' : 'Your message has been sent. We will respond within 24 hours.')}</p>
+            </div>
+            <button onClick={() => setShowSuccess(false)} className="w-full py-2 px-4 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition">OK</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

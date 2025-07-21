@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { motion } from "framer-motion"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useLanguage } from "@/contexts/language-context"
 
 export default function PropertyCalculator() {
+  const { t } = useLanguage()
   const [propertyType, setPropertyType] = useState("maison")
   const [squareFeet, setSquareFeet] = useState(1500)
   const [bedrooms, setBedrooms] = useState(3)
@@ -76,27 +78,27 @@ export default function PropertyCalculator() {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-      <h3 className="text-xl md:text-2xl font-bold mb-6">Estimez la valeur de votre propriété</h3>
+      <h3 className="text-xl md:text-2xl font-bold mb-6">{t("calculator.title")}</h3>
 
       <div className="space-y-6">
         <div>
-          <Label htmlFor="property-type">Type de propriété</Label>
+          <Label htmlFor="property-type">{t("calculator.propertyTypeLabel")}</Label>
           <Select value={propertyType} onValueChange={setPropertyType}>
             <SelectTrigger id="property-type" className="mt-2">
-              <SelectValue placeholder="Sélectionnez un type" />
+              <SelectValue placeholder={t("calculator.propertyTypeSelect")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="maison">Maison unifamiliale</SelectItem>
-              <SelectItem value="condo">Condo</SelectItem>
-              <SelectItem value="duplex">Duplex</SelectItem>
-              <SelectItem value="triplex">Triplex ou plus</SelectItem>
+              <SelectItem value="maison">{t("calculator.propertyTypeHouse")}</SelectItem>
+              <SelectItem value="condo">{t("calculator.propertyTypeCondo")}</SelectItem>
+              <SelectItem value="duplex">{t("calculator.propertyTypeDuplex")}</SelectItem>
+              <SelectItem value="triplex">{t("calculator.propertyTypeTriplex")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div>
           <div className="flex justify-between items-center">
-            <Label htmlFor="square-feet">Superficie (pi²)</Label>
+            <Label htmlFor="square-feet">{t("calculator.squareFeetLabel")}</Label>
             <span className="text-sm font-medium">{squareFeet} pi²</span>
           </div>
           <Slider
@@ -113,7 +115,7 @@ export default function PropertyCalculator() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <div className="flex justify-between items-center">
-              <Label htmlFor="bedrooms">Chambres</Label>
+              <Label htmlFor="bedrooms">{t("calculator.bedroomsLabel")}</Label>
               <span className="text-sm font-medium">{bedrooms}</span>
             </div>
             <Slider
@@ -129,7 +131,7 @@ export default function PropertyCalculator() {
 
           <div>
             <div className="flex justify-between items-center">
-              <Label htmlFor="bathrooms">Salles de bain</Label>
+              <Label htmlFor="bathrooms">{t("calculator.bathroomsLabel")}</Label>
               <span className="text-sm font-medium">{bathrooms}</span>
             </div>
             <Slider
@@ -145,16 +147,16 @@ export default function PropertyCalculator() {
         </div>
 
         <div>
-          <Label htmlFor="condition">État de la propriété</Label>
+          <Label htmlFor="condition">{t("calculator.conditionLabel")}</Label>
           <Select value={condition} onValueChange={setCondition}>
             <SelectTrigger id="condition" className="mt-2">
-              <SelectValue placeholder="Sélectionnez l'état" />
+              <SelectValue placeholder={t("calculator.conditionSelect")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="excellent">Excellent - Récemment rénové</SelectItem>
-              <SelectItem value="bon">Bon - Bien entretenu</SelectItem>
-              <SelectItem value="moyen">Moyen - Quelques réparations nécessaires</SelectItem>
-              <SelectItem value="renovation">À rénover - Travaux majeurs requis</SelectItem>
+              <SelectItem value="excellent">{t("calculator.conditionExcellent")}</SelectItem>
+              <SelectItem value="bon">{t("calculator.conditionGood")}</SelectItem>
+              <SelectItem value="moyen">{t("calculator.conditionAverage")}</SelectItem>
+              <SelectItem value="renovation">{t("calculator.conditionRenovation")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -163,7 +165,7 @@ export default function PropertyCalculator() {
           onClick={calculateEstimate}
           className="w-full bg-gradient-to-r from-teal-600 to-emerald-500 hover:from-teal-700 hover:to-emerald-600"
         >
-          Calculer l'estimation
+          {t("calculator.calculateButton")}
         </Button>
 
         {showResult && (
@@ -172,18 +174,17 @@ export default function PropertyCalculator() {
             animate={{ opacity: 1, y: 0 }}
             className="mt-6 p-4 bg-teal-50 border border-teal-200 rounded-lg"
           >
-            <h4 className="font-semibold text-lg mb-2">Estimation de votre propriété</h4>
-            <p className="text-gray-700">Basé sur les informations fournies, votre propriété pourrait valoir entre:</p>
+            <h4 className="font-semibold text-lg mb-2">{t("calculator.resultTitle")}</h4>
+            <p className="text-gray-700">{t("calculator.resultDescription")}</p>
             <p className="text-2xl font-bold text-teal-700 mt-2">
               {formatPrice(minPrice)} - {formatPrice(maxPrice)}
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              Cette estimation est approximative. Pour une évaluation précise, contactez-nous pour une offre
-              personnalisée.
+              {t("calculator.resultNote")}
             </p>
             <div className="mt-4">
               <Button asChild className="w-full bg-teal-600 hover:bg-teal-700">
-                <a href="/obtenir-mon-offre">Obtenir une offre précise</a>
+                <a href="/obtenir-mon-offre">{t("calculator.getPreciseOfferButton")}</a>
               </Button>
             </div>
           </motion.div>
