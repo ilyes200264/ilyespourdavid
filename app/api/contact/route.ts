@@ -139,7 +139,7 @@ export async function POST(req: NextRequest) {
     // Send mail
     await transporter.sendMail({
       from: 'noreply@confortplus65.com',
-      to: 'info@quoifaireavecmamaison.ca',
+      to: 'david.manianga@quoifaireavecmamaison.com',
       subject,
       html,
     });
